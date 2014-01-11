@@ -3,14 +3,13 @@
 #8 January 2014
 
 #1
-
-arr=[]	# local variable
-
+arr=[]
 1.upto(3) do
+	puts arr.empty?
 	arr.push(1)
 end
-
-puts arr.join	#variable will change
+#Variable will change
+puts arr.join
 
 
 #2

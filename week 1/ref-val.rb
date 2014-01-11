@@ -19,6 +19,7 @@ puts "Here is the array after it was passed to foo: " + my_arr.to_s
 puts "Sorting array, but this WILL change it! " + (bar my_arr).to_s
 puts "Here is the array after it was passed to bar: " +my_arr.to_s
 
+
 # arr.sort returns a NEW array while arr.sort! changes the contents
 # of the array we pass to it.  to protect immutability, or not to
 # protect immutability... 
