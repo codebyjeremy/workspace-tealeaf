@@ -5,8 +5,8 @@
 #1
 arr=[]
 1.upto(3) do
-	puts arr.empty?
-	arr.push(1)
+		puts arr.empty?
+		arr.push(1)
 end
 #Variable will change
 puts arr.join
@@ -14,8 +14,8 @@ puts arr.join
 
 #2
 1.upto(3) do
-	x=2
-	puts x-=1
+		x=2
+		puts x-=1
 end
 
 #puts x  <-- we have no access to x at this scope, ruby will crash

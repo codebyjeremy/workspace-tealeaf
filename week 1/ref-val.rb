@@ -4,15 +4,15 @@
 
 # sort array, immutable way
 def foo arr
-	arr.sort
+		arr.sort
 end
 
 # sort array, non immutable way
 def bar arr
-	arr.sort!
+		arr.sort!
 end
 
-my_arr = [3,2,1]	#the array we will use, NOTE, it's reversed
+my_arr = [3,2,1]  #the array we will use, NOTE, it's reversed
 puts "Sorting array, but won't change it! " + (foo my_arr).to_s
 puts "Here is the array after it was passed to foo: " + my_arr.to_s
 

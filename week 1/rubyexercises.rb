@@ -12,8 +12,8 @@
 arr = [1,2,3,4,5,6,7,8,9,10].select {|x| x.odd?}
 
 #4(using the value from the previous answer)
-arr << 11				#append 11
-arr.unshift 0		#prepend 0
+arr << 11       #append 11
+arr.unshift 0   #prepend 0
 
 #5 
 arr.delete(11)
