@@ -4,12 +4,12 @@
 
 # sort array, immutable way
 def foo arr
-		arr.sort
+  arr.sort
 end
 
 # sort array, non immutable way
 def bar arr
-		arr.sort!
+  arr.sort!
 end
 
 my_arr = [3,2,1]  #the array we will use, NOTE, it's reversed
