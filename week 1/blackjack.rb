@@ -9,14 +9,14 @@ def automate_dealer (hand, deck)
   dealer_total = calc_total hand # calculates dealer total
   
   if dealer_total >= 21
-    display_hand hand, "dealer" #displays hand
+    display_hand hand, [], "dealer" #displays hand
     puts "Total is: " + player_total.to_s + "\n " #displays total
     return dealer_total # returns immediately
   end
 
   if dealer_total < 17
     hand << (deal_card deck)
-    hit hand, deck, "dealer"
+    hit hand, [], deck, "dealer"
   else
     dealer_total
   end
@@ -27,7 +27,7 @@ def blackjack
   name = prompt_user
   decks = init_decks 5 # create decks
   nil until (play decks) == false # play blackjack until we are done
-  puts "Well that was fun.  Later, " + name # takes all of the money :(
+  puts "Well that was fun.  Later, #{name}" # takes all of the money :(
   exit
 end
 
@@ -74,17 +74,25 @@ def deal_card (deck) # note: deck is a hash
 end
 
 # displays hand
-def display_hand (hand, player)
+def display_hand (hand, player, d_hand)
   total = 0
+  turn = 0
   say = ""
   if player == "player"
     say = "You have: "
+    turn = 1
   else
     say = "I have: "
   end
   puts say
   hand.each do |card|
     puts card.keys.first.to_s + card.fetch(card.keys.first) # display card
+  end
+  if turn == 1
+    puts "\nI have: "
+    puts d_hand.first.keys.first.to_s + 
+    d_hand.first.fetch(d_hand.first.keys.first)
+    puts "A hidden card.  For now."
   end
   puts
 end
@@ -101,8 +109,8 @@ def find_value (card)
 end
 
 # hit returns total
-def hit (hand, deck, player)
-  display_hand hand, player #display hand
+def hit (hand, dealer_hand, deck, player)
+  display_hand hand, player, dealer_hand #display hand
   player_total = calc_total hand
   puts "Total is: " + player_total.to_s + "\n " #display total
 
@@ -126,7 +134,7 @@ def hit (hand, deck, player)
   if decision == 'hit'
     system "clear" # easier to read game
     hand << (deal_card deck)
-    hit hand, deck, player
+    hit hand, dealer_hand, deck, player
   else
     puts
     player_total
@@ -158,7 +166,10 @@ def play (decks)
   player_hand << (deal_card deck)
   player_hand << (deal_card deck)
 
-  player_total = hit player_hand, deck, "player"
+  dealer_hand << (deal_card deck)
+  dealer_hand << (deal_card deck)
+
+  player_total = hit player_hand, dealer_hand, deck, "player"
 
   # evaluate scenarios
   if player_total > 21 # if player busted
@@ -166,9 +177,7 @@ def play (decks)
   elsif player_total == 21 # if player hit 21
     puts "You win. Congrats.  I, uh, lost your bet, however. Sorry."
   else # if player stayed below 21
-    dealer_hand << (deal_card deck)
-    dealer_hand << (deal_card deck)
-    dealer_total = hit dealer_hand, deck, "dealer"
+    dealer_total = hit dealer_hand, [], deck, "dealer"
 
     if dealer_total > 21
       puts "You win. Congrats. I, uh, lost your bet however. Sorry"
@@ -201,7 +210,7 @@ def prompt_user
   system "clear"
   puts "Hello, let's play Blackjack.  First, tell me your name: "
   name = gets.chomp
-  puts "Welcome, " + name + ", get ready to lose all of your money."
+  puts "Welcome, #{name} get ready to lose all of your money."
   puts
   name
 end
