@@ -1,3 +1,4 @@
+# happy birthday
 puts "When was your birth year (ex 2014)?"
 year = gets.chomp
 puts "And your birth month (ex 01)?"
