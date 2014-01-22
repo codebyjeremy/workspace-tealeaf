@@ -17,7 +17,7 @@ class Card
     "#{@value} #{@suit}"
   end
 
-  # returns value
+  # returns value in numeric form
   def get_value
     if @value == 'A'
       11
@@ -28,6 +28,7 @@ class Card
     end
   end
 
+  # determines if card is an ace
   def is_ace?
     @value == 'A'
   end
@@ -65,12 +66,12 @@ class Deck
 end
 
 class Player
+  attr_reader :score
 
   # creates a default player unless otherwise specified
-  def initialize (hand = [], score = 0, money = 1000)
+  def initialize (hand = [], score = 0)
     @hand = hand
     @score = score
-    @money = money
   end
 
   # adds a card to hand
@@ -87,7 +88,7 @@ class Player
       @score += card.get_value
     end
 
-    if score > 21 #adjusts score for aces
+    if @score > 21 #adjusts score for aces
       aces = num_aces @hand
       @score -= 10 if aces == 1
       @score -= 10 * (aces - 1) if aces >=2
@@ -103,7 +104,7 @@ class Player
     puts "You have: "
     display_hand
     puts "\nYour score is: #{score}"
-    return score if score >= 21 # end turn if we win or bust
+    return @score if @score >= 21 # end turn if we win or bust
 
     puts "\nDo you want to hit or stay?"
     puts "Please type 'hit' or 'stay"
@@ -130,20 +131,14 @@ class Player
     hand.each {|card| aces += 1 if card.is_ace?}
     aces
   end
-
-  # returns the score
-  def score
-    @score
-  end
 end
 
 # dealer is a type of player
 class Dealer < Player
 
-  # creates a player with 5000 bucks
+  # creates a dealer
   def initialize
     super
-    @money = 5000
   end
 
   # reimplemented play hand for dealer
@@ -165,7 +160,7 @@ class Blackjack
 
   def initialize
     @decks = []
-    5.times {@decks << Deck.new}
+    5.times {@decks << Deck.new} # creates 5 shuffled decks
     @player = Player.new
     @dealer = Dealer.new
     @name = prompt_user  
@@ -182,7 +177,7 @@ class Blackjack
   end
 
   def play
-    deck = @decks.sample
+    deck = @decks.sample # chooses a deck to play
 
     # add cards to players hands
     @player.hit deck
@@ -190,16 +185,16 @@ class Blackjack
     @player.hit deck
     @dealer.hit deck
 
-    player_total = @player.play_hand deck
-    if  player_total > 21 # if player busted
-      puts "You busted. Game Over. You lost. You're broke. Get out."
-    elsif player_total == 21 # if player hit 21
+    @player.play_hand deck # players turn
+    if  @player.score > 21 # if player busted
+      puts "I win. Hahahaha. Game Over. You lost. You're broke. Get out."
+    elsif @player.score == 21 # if player hit 21
       puts "You win. Congrats.  I, uh, lost your bet, however. Sorry."
     else # if player stayed below 21
-      dealer_total = @dealer.play_hand deck
-      if dealer_total > 21
+      @dealer.play_hand deck # dealers turn
+      if @dealer.score > 21 # dealer busts
         puts "You win. Congrats. I, uh, lost your bet however. Sorry"
-      elsif dealer_total == 21 || dealer_total >= player_total #dealer wins
+      elsif @dealer.score == 21 || @dealer.score >= @dealer.score #dealer wins
         puts "I win. Hahahaha. Game Over. You lost. You're broke. Get out."
       else
         puts "You win. Congrats. I, uh, lost your bet, however. Sorry."
